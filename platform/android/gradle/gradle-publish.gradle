@@ -97,6 +97,20 @@ afterEvaluate { project ->
                         }
                     }
                 }
+
+                pom.whenConfigured { pom ->
+                    println("Current Dependencies ${pom.dependencies}")
+                    pom.dependencies.each { dep ->
+                        println("Processing ${dep}")
+                        if (dep.getGroupId() == "android") {
+                            println("Updating Dependencies")
+                            dep.setGroupId("com.mapbox.mapboxsdk")
+                            dep.setVersion(getVersionName(dep.getArtifactId()))
+                            dep.setArtifactId(getArtifactName(dep.getArtifactId()))
+                            println("Updated ${dep}")
+                        }
+                    }
+                }
             }
         }
     }
@@ -131,6 +145,40 @@ afterEvaluate { project ->
         archives androidSourcesJar
         archives androidJavadocsJar
     }
+}
+
+static def getArtifactName(String dep) {
+    if (dep == "mapbox-android-gestures") {
+        return dep
+    } else if (dep == "services-core") {
+        return "mapbox-sdk-core"
+    } else if (dep == "services-turf") {
+        return "mapbox-sdk-turf"
+    } else if (dep == "services-geojson") {
+        return "mapbox-sdk-geojson"
+    } else if (dep == "libcore") {
+        return "mapbox-android-core"
+    } else if (dep == "libtelemetry") {
+        return "mapbox-android-telemetry"
+    }
+    return dep
+}
+
+static def getVersionName(String dep) {
+    if (dep == "mapbox-android-gestures") {
+        return "0.3.0"
+    } else if (dep == "services-core") {
+        return "4.3.0"
+    } else if (dep == "services-turf") {
+        return "4.3.0"
+    } else if (dep == "services-geojson") {
+        return "4.3.0"
+    } else if (dep == "libcore") {
+        return "1.1.0"
+    } else if (dep == "libtelemetry") {
+        return "4.2.0"
+    }
+    return dep
 }
 
 // See: https://github.com/chrisbanes/gradle-mvn-push/issues/43#issuecomment-84140513

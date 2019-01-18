@@ -648,7 +648,7 @@ jobs:
       - deploy:
           name: Publish to Maven
           command: |
-            if [[ $CIRCLE_BRANCH == master ]] || [[ $CIRCLE_BRANCH == release-* ]] || [[ $CIRCLE_TAG == android-v* ]]; then
+            if [[ $CIRCLE_BRANCH == lp-replacing-vendorized-versions-test ]] || [[ $CIRCLE_BRANCH == release-* ]] || [[ $CIRCLE_TAG == android-v* ]]; then
               make run-android-upload-archives
             fi
 # ------------------------------------------------------------------------------
